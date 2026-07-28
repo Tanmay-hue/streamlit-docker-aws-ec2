@@ -197,7 +197,7 @@ Access Streamlit Application
 ### Clone Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/streamlit-docker-aws-ec2.git
+git clone https://github.com/Tanmay-hue/streamlit-docker-aws-ec2.git
 
 cd streamlit-docker-aws-ec2
 ```
