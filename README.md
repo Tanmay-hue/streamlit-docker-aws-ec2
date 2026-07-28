@@ -24,7 +24,6 @@ A hands-on DevOps project demonstrating how to deploy a Dockerized Streamlit Mac
 - Screenshots
 - Key Learnings
 - Future Improvements
-- License
 
 ---
 
@@ -333,11 +332,8 @@ Through this project I gained hands-on experience with:
 - Add GitHub Actions CI/CD
 - Push Docker images to Docker Hub or Amazon ECR
 - Deploy using Amazon ECS or EKS
-- Configure an NGINX reverse proxy
 - Add HTTPS with SSL/TLS
 - Integrate CloudWatch monitoring
-- Use an Application Load Balancer
-- Deploy in a Multi-AZ architecture
 
 ---
 
