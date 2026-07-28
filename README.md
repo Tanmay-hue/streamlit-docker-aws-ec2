@@ -1,196 +1,346 @@
 # Deploying a Streamlit App in Docker on AWS EC2
 
-![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)
-![Streamlit](https://img.shields.io/badge/Streamlit-Web_App-red?logo=streamlit)
-![Docker](https://img.shields.io/badge/Docker-Containerized-blue?logo=docker)
-![AWS](https://img.shields.io/badge/AWS-EC2-orange?logo=amazonaws)
+![Python](https://img.shields.io/badge/Python-3.9-blue?logo=python)
+![Streamlit](https://img.shields.io/badge/Streamlit-Web_App-FF4B4B?logo=streamlit&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-EC2-FF9900?logo=amazonaws&logoColor=white)
+![Amazon Linux](https://img.shields.io/badge/Amazon_Linux-2023-232F3E?logo=amazonaws)
 
-##  Introduction
-A production-ready deployment project demonstrating how to containerize a Streamlit application using Docker and deploy it on an AWS EC2 instance. This project covers local development, Docker image creation, container execution, cloud deployment, and remote application access.
-
-#  Project Overview
-
-This project demonstrates the end-to-end deployment lifecycle of a Streamlit web application.
-
-The application is first developed locally, containerized using Docker, and then deployed on an AWS EC2 virtual machine. Users can access the application through the EC2 public IP address.
-
-This project demonstrates practical cloud deployment skills frequently required in DevOps and Cloud Engineering roles.
-
-
-
-##  Table of Contents
-1️⃣ Configuring VPC, Subnet, Route Table, and Internet Gateway  
-2️⃣ Setting Up an EC2 Instance  
-3️⃣ Connecting to EC2  
-4️⃣ Adjusting Permissions for PEM Key  
-5️⃣ Installing Docker  
-6️⃣ Uploading Files to EC2  
-7️⃣ Building & Running the Docker Container  
-8️⃣ Accessing the Streamlit App  
-9️⃣ Managing the Docker Container  
+A hands-on DevOps project demonstrating how to deploy a Dockerized Streamlit Machine Learning application on an Amazon EC2 instance. The project covers AWS networking setup, Docker containerization, Linux server configuration, and cloud deployment.
 
 ---
 
-## 1️⃣ Configuring VPC, Subnet, Route Table, and Internet Gateway
+# Table of Contents
 
-### 🌟 Creating a VPC
-Navigate to AWS Console → VPC Dashboard → Create VPC  
-- **VPC Name:** MyCustomVPC  
-- **IPv4 CIDR:** 10.0.0.0/16  
-
-![img1](https://github.com/Tanmay-hue/streamlit-docker-aws-ec2/blob/main/screenshots/1.png)
-
-### 🌟 Setting Up a Subnet
-Go to VPC Dashboard → Subnets → Create Subnet  
-- **VPC:** MyCustomVPC  
-- **Subnet Name:** MyPublicSubnet  
-- **CIDR:** 10.0.1.0/24  
-- **Auto-assign Public IPv4:** Enabled  
-
-![img2](https://github.com/Tanmay-hue/streamlit-docker-aws-ec2/blob/main/screenshots/2.png)
-
-### 🌟 Creating an Internet Gateway
-- **Gateway Name:** MyIGW  
-- **Attach to:** MyCustomVPC  
-
-![img3](https://github.com/Tanmay-hue/streamlit-docker-aws-ec2/blob/main/screenshots/3.png)
-
-### 🌟 Setting Up a Route Table
-- **Route Table Name:** MyPublicRouteTable  
-- **Destination:** 0.0.0.0/0  
-- **Target:** MyIGW  
-- **Associate with:** MyPublicSubnet  
-
-![img4](https://github.com/Tanmay-hue/streamlit-docker-aws-ec2/blob/main/screenshots/4.png)
+- Project Overview
+- Architecture
+- Features
+- Tech Stack
+- AWS Infrastructure
+- Project Structure
+- Deployment Workflow
+- Prerequisites
+- Deployment Steps
+- Screenshots
+- Key Learnings
+- Future Improvements
+- License
 
 ---
 
-## 2️⃣ Setting Up an EC2 Instance
+# Project Overview
 
-### 🏗️ Launching an EC2 Instance
-- **Instance Name:** Streamlit-EC2  
-- **AMI:** Amazon Linux 2023  
-- **Type:** t2.micro (Free Tier)  
-- **Key Pair:** Create or Select  
-- **VPC:** MyCustomVPC  
-- **Subnet:** MyPublicSubnet  
-- **Public IP Assignment:** Enabled  
-- **Security Group:** Allow SSH (22), HTTP (80), Streamlit (8501)  
+This project demonstrates the complete deployment lifecycle of a Streamlit application on AWS.
 
-![img5](https://github.com/Tanmay-hue/streamlit-docker-aws-ec2/blob/main/screenshots/5.png)
+The deployment includes:
 
----
-
-## 3️⃣ Connecting to EC2
-
-### 🔗 Using EC2 Instance Connect
-Go to EC2 Dashboard → Select Instance → Click Connect  
-- **Connection Method:** EC2 Instance Connect  
-- **Click:** Connect  
-
-![img6](https://github.com/Tanmay-hue/streamlit-docker-aws-ec2/blob/main/screenshots/6.png)
+- Creating a custom VPC
+- Creating a Public Subnet
+- Configuring an Internet Gateway
+- Configuring Route Tables
+- Launching an Amazon EC2 instance
+- Connecting through SSH
+- Installing Docker
+- Building a Docker image
+- Running the Streamlit application inside a Docker container
+- Accessing the application through the EC2 Public IP
 
 ---
 
-## 4️⃣ Adjusting Permissions for PEM Key
-```sh
-mv /path/to/your-key.pem ~/your-work-directory/
-chmod 600 your-key.pem
+# Architecture
+
+```text
+                  User
+                    │
+                    ▼
+         Public IPv4 Address
+                    │
+                    ▼
+        Amazon EC2 Instance
+        (Amazon Linux 2023)
+                    │
+          Docker Engine
+                    │
+                    ▼
+     Streamlit Docker Container
+                    │
+                    ▼
+      Streamlit Machine Learning App
 ```
 
 ---
 
-## 5️⃣ Installing Docker
-```sh
-sudo yum update -y
-sudo yum install -y docker
-sudo systemctl enable docker
-sudo systemctl start docker
-```
+# Features
 
-![img7](https://github.com/Tanmay-hue/streamlit-docker-aws-ec2/blob/main/screenshots/7.png)
-
----
-
-## 6️⃣ Uploading Files to EC2
-```sh
-scp -i your-key.pem app.py Dockerfile requirements.txt mushrooms.csv ec2-user@your-ec2-public-ip:/home/ec2-user/
-```
-
-![img8](https://github.com/Tanmay-hue/streamlit-docker-aws-ec2/blob/main/screenshots/8.png)
+- Dockerized Streamlit application
+- AWS EC2 deployment
+- Amazon Linux 2023
+- Custom AWS VPC
+- Public Subnet configuration
+- Internet Gateway configuration
+- Route Table configuration
+- Secure SSH access
+- Docker container deployment
+- Browser-accessible Streamlit application
 
 ---
 
-## 7️⃣ Building & Running the Docker Container
+# Tech Stack
 
-### 🏗️ Navigating to Project Directory
-```sh
-cd /home/ec2-user
+| Technology | Purpose |
+|------------|---------|
+| Python | Application Development |
+| Streamlit | Web Interface |
+| Scikit-learn | Machine Learning |
+| Pandas | Data Processing |
+| Docker | Containerization |
+| AWS EC2 | Cloud Compute |
+| Amazon Linux 2023 | Operating System |
+| AWS VPC | Networking |
+| Git | Version Control |
+| GitHub | Source Code Hosting |
+
+---
+
+# AWS Infrastructure
+
+The following AWS resources were created manually for deployment:
+
+- Custom VPC
+- Public Subnet
+- Internet Gateway
+- Route Table
+- Security Group
+- Amazon EC2 (t3.micro)
+
+---
+
+# Project Structure
+
+```text
+streamlit-docker-aws-ec2/
+│
+├── README.md
+├── LICENSE
+├── .gitignore
+├── Dockerfile
+├── requirements.txt
+├── app.py
+├── mushrooms.csv
+│
+├── docs/
+│   └── deployment-guide.md
+│
+└── screenshots/
+    ├── vpc-created.png
+    ├── subnet-created.png
+    ├── internet-gateway.png
+    ├── route-table.png
+    ├── ec2-instance.png
+    ├── ec2-connected.png
+    ├── docker-installed.png
+    ├── docker-build.png
+    ├── container-running.png
+    └── streamlit-app.png
 ```
-### 🏗️ Building the Docker Image
-```sh
+
+---
+
+# Deployment Workflow
+
+```text
+Create VPC
+      │
+      ▼
+Create Public Subnet
+      │
+      ▼
+Attach Internet Gateway
+      │
+      ▼
+Configure Route Table
+      │
+      ▼
+Launch EC2 Instance
+      │
+      ▼
+SSH into EC2
+      │
+      ▼
+Install Docker
+      │
+      ▼
+Build Docker Image
+      │
+      ▼
+Run Docker Container
+      │
+      ▼
+Access Streamlit Application
+```
+
+---
+
+# Prerequisites
+
+- AWS Account
+- Amazon EC2
+- Docker
+- SSH Client
+- Git
+- Python 3.9+
+
+---
+
+# Deployment Steps
+
+### Clone Repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/streamlit-docker-aws-ec2.git
+
+cd streamlit-docker-aws-ec2
+```
+
+### Connect to EC2
+
+```bash
+ssh -i my-ec2-key.pem ec2-user@<PUBLIC-IP>
+```
+
+### Build Docker Image
+
+```bash
 sudo docker build -t streamlit-app .
 ```
 
-![img9](https://github.com/Tanmay-hue/streamlit-docker-aws-ec2/blob/main/screenshots/9.png)
+### Run Container
 
-### 🏗️ Running the Docker Container
-```sh
-sudo docker run -d -p 8501:8501 --name streamlit_container streamlit-app
+```bash
+sudo docker run -d -p 8501:8501 --name streamlit-container streamlit-app
 ```
 
-![img10](https://github.com/Tanmay-hue/streamlit-docker-aws-ec2/blob/main/screenshots/10.png)
+Open your browser:
 
----
-
-## 8️⃣ Accessing the Streamlit App
-🌎 Open your browser and go to:
-```sh
-http://your-ec2-public-ip:8501
-```
-
-![img11](https://github.com/Tanmay-hue/streamlit-docker-aws-ec2/blob/main/screenshots/11.png)
-
----
-
-## Build Docker Image
-
-docker build -t streamlit-app .
-
-## Run Container
-
-docker run -p 8501:8501 streamlit-app
-
-## 9️⃣ Managing the Docker Container
-
-### 🛠️ Checking Running Containers
-```sh
-sudo docker ps
-```
-### 🛠️ Stopping the Container
-```sh
-sudo docker stop streamlit_container
-```
-### 🛠️ Removing the Container
-```sh
-sudo docker rm streamlit_container
-```
-### 🛠️ Restarting the Container
-```sh
-sudo docker start streamlit_container
+```text
+http://<EC2-PUBLIC-IP>:8501
 ```
 
 ---
 
-## Future Improvements
-Deploy using Docker Compose
-Deploy using GitHub Actions
-Automate deployment with Terraform
-Add monitoring using Prometheus & Grafana
-Deploy on Kubernetes
-Multi-stage Docker builds
-Auto-scaling using AWS
+# Screenshots
 
-## Author
+## 1️⃣ Custom VPC
+
+Created a dedicated Virtual Private Cloud for the deployment.
+
+![VPC](screenshots/vpc-created.png)
+
+---
+
+## Public Subnet
+
+Configured a public subnet inside the VPC.
+
+![Subnet](screenshots/subnet-created.png)
+
+---
+
+##  Internet Gateway
+
+Attached an Internet Gateway to provide internet connectivity.
+
+![Internet Gateway](screenshots/internet-gateway.png)
+
+---
+
+##  Route Table
+
+Configured routing between the subnet and the Internet Gateway.
+
+![Route Table](screenshots/route-table.png)
+
+---
+
+##  EC2 Instance
+
+Launched an Amazon Linux EC2 instance.
+
+![EC2](screenshots/ec2-instance.png)
+
+---
+
+##  Connected to EC2
+
+Successfully connected to the EC2 instance using SSH.
+
+![SSH](screenshots/ec2-connected.png)
+
+---
+
+##  Docker Installation
+
+Installed and configured Docker on Amazon Linux.
+
+![Docker Installation](screenshots/docker-installed.png)
+
+---
+
+## Docker Image Build
+
+Built the Docker image directly on the EC2 instance.
+
+![Docker Build](screenshots/docker-build.png)
+
+---
+
+## Running Docker Container
+
+Started the Streamlit container and verified that it was running.
+
+![Container Running](screenshots/container-running.png)
+
+---
+
+## Streamlit Application
+
+Successfully deployed and accessed the Streamlit application through the EC2 public IP.
+
+![Application](screenshots/streamlit-app.png)
+
+---
+
+# Key Learnings
+
+Through this project I gained hands-on experience with:
+
+- Docker image creation
+- Docker container deployment
+- AWS EC2 provisioning
+- Amazon VPC networking
+- Public Subnet configuration
+- Internet Gateway attachment
+- Route Table configuration
+- Linux server administration
+- SSH connectivity
+- Cloud application deployment
+
+---
+
+# Future Improvements
+
+- Automate infrastructure using Terraform
+- Add GitHub Actions CI/CD
+- Push Docker images to Docker Hub or Amazon ECR
+- Deploy using Amazon ECS or EKS
+- Configure an NGINX reverse proxy
+- Add HTTPS with SSL/TLS
+- Integrate CloudWatch monitoring
+- Use an Application Load Balancer
+- Deploy in a Multi-AZ architecture
+
+---
+
+# Author
 
 Tanmay Singh
