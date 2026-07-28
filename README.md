@@ -147,6 +147,14 @@ http://your-ec2-public-ip:8501
 
 ---
 
+## Build Docker Image
+
+docker build -t streamlit-app .
+
+## Run Container
+
+docker run -p 8501:8501 streamlit-app
+
 ## 9️⃣ Managing the Docker Container
 
 ### 🛠️ Checking Running Containers
